@@ -1,10 +1,19 @@
+import axios from "axios";
+
 const containerVideos = document.querySelector(".videos__container");
 
 async function buscarEMostrarVideos() {
-  try {
-    const busca = await fetch("http://localhost:3000/videos");
-    const videos = await busca.json();
+  const urlVideos = import.meta.env.PROD 
+  ? "https://gist.githubusercontent.com/hapoliano/3816de5269346aac7622e6b3d0ae221d/raw/dbfa375cfd887a560592070de612c7c2fb5612ae/videos.json"
+  : "http://localhost:3000/videos";
 
+  console.log(import.meta.env.PROD);
+  console.log(urlVideos);
+
+  try {
+    const busca = await axios.get(urlVideos);
+
+    const videos = busca.data;
     videos.forEach((video) => {
       if (video.categoria == "") {
         throw new Error("Vídeo não tem categoria");
